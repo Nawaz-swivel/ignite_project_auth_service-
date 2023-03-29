@@ -1,0 +1,54 @@
+## servlet configuration
+server:
+  port: ${PORT:8079}
+
+## application configuration
+spring:
+  application:
+    name: ignite-auth-service
+  datasource:
+    url: jdbc:mysql://db_instance:db_port/ignite_auth_db?createDatabaseIfNotExist=true
+    username: ${DB_USERNAME:db_username}
+    password: ${DB_PASSWORD:db_pwd}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    initialization-mode: always
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    baseline-on-migrate: true
+    enabled: true
+    user: ${DB_USERNAME:db_username}
+    password: ${DB_PASSWORD:db_pwd}
+    baseline-version: 0
+    baseline-description: "init db migration"
+
+## eureka server configuration
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://discovery_instance:8761/eureka}
+
+
+## oauth2 security configuration
+security:
+  oauth2:
+    resource:
+      token-info-uri: http://gateway_instance:8080/ignite-auth-service/oauth/check_token
+    client:
+      client-id: ignite-client
+      client-secret: 1234
+
+# oauth2 resource server configuration
+oauth:
+  resource-id: ${RESOURCE_ID:ignite_auth}
+
+# cors configuration
+accessControl:
+  allowedOrigin: ${ALLOWED_ORIGIN:*}
+  allowedMethods: ${ALLOWED_METHODS:GET, POST, PUT, PATCH, DELETE, OPTIONS}
+  maxAge: ${MAX_AGE:3600}
+  allowedHeaders: ${ALLOWED_HEADERS:*}
