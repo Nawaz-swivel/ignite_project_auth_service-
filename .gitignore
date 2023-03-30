@@ -2,3 +2,5 @@ target/
 /src/main/resources/data.txt
 /src/main/resources/schema.txt
 .idea/
+logs/
+LOG_PATH_IS_UNDEFINED/

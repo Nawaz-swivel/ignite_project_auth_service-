@@ -39,7 +39,6 @@ public class CustomTokenEnhancer implements TokenEnhancer {
 
         data.setUserId(user.getId());
         data.setUsername(user.getUsername());
-//        data.setEmail(user.getEmail());
         data.setRole(user.getRole().getName());
 
         additionalInfo.put(STATUS, SUCCESS_STATUS);
