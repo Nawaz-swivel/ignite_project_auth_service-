@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * Role entity
@@ -33,11 +32,6 @@ public class Role implements Serializable {
     private Date created;
     @Column
     private Date updated;
-
-//    public Role(RoleRegistrationRequestDto dto) {
-//        this.id = ROLE_ID_PREFIX + UUID.randomUUID();
-//        this.name = dto.getRoleName();
-//    }
 
     @PrePersist
     private void onCreate() {

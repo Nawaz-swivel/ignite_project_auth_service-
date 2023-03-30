@@ -11,14 +11,12 @@ public class UserResponseDto implements ResponseDto {
 
     private final String userId;
     private final String userName;
-//    private final String email;
     private final String password;
     private final String role;
 
     public UserResponseDto(User user) {
         this.userId = user.getId();
         this.userName = user.getUsername();
-//        this.email = user.getEmail();
         this.password = user.getPassword();
         this.role = user.getRole().getName();
     }

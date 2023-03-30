@@ -15,12 +15,7 @@ import org.springframework.http.ResponseEntity;
  */
 public class Controller {
 
-    protected static final String DEFAULT_SORT = "updated";
-    protected static final String UNSORTED = "unsorted";
-    protected static final int DEFAULT_PAGE = 0;
-    protected static final int PAGE_MAX_SIZE = 40;
     protected static final String APPLICATION_JSON_UTF_8 = "application/json;charset=UTF-8";
-    protected static final String MULTIPART_FORM_DATA = "multipart/form-data";
     private static final String ERROR_MESSAGE = "Oops!! Something went wrong. Please try again.";
     private static final String SUCCESS_MESSAGE = "Successfully returned the data.";
 

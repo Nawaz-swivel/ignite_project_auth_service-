@@ -1,8 +1,8 @@
 package com.swivel.ignite.auth.dto;
 
-import com.swivel.ignite.auth.exception.AuthException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.swivel.ignite.auth.exception.AuthException;
 
 /**
  * Base DTO (Data Transfer Object)

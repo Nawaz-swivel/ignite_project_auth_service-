@@ -25,12 +25,11 @@ public class User implements Serializable {
 
     @Id
     private String id;
-    @Column(nullable = false)
+
+    // username property is unique to each user
+    @Column(nullable = false, unique = true)
     private String username;
 
-    // email property is unique to each user
-//    @Column(nullable = false)
-//    private String email;
     @Column(nullable = false)
     private String password;
     @ManyToOne
@@ -44,7 +43,6 @@ public class User implements Serializable {
     public User(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
-//        this.email = user.getEmail();
         this.password = user.getPassword();
         this.role = user.getRole();
         this.created = user.getCreated();
@@ -54,7 +52,6 @@ public class User implements Serializable {
     public User(UserRegistrationRequestDto dto) {
         this.id = USER_ID_PREFIX + UUID.randomUUID();
         this.username = dto.getUsername();
-//        this.email = dto.getEmail();
         this.password = dto.getPassword();
         this.role = dto.getRole();
     }

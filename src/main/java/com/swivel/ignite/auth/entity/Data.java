@@ -14,6 +14,5 @@ public class Data implements Serializable {
 
     private String userId;
     private String username;
-//    private String email;
     private String role;
 }

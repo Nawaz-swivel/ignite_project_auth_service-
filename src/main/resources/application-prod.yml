@@ -45,10 +45,3 @@ security:
 # oauth2 resource server configuration
 oauth:
   resource-id: ${RESOURCE_ID:ignite_auth}
-
-# cors configuration
-accessControl:
-  allowedOrigin: ${ALLOWED_ORIGIN:*}
-  allowedMethods: ${ALLOWED_METHODS:GET, POST, PUT, PATCH, DELETE, OPTIONS}
-  maxAge: ${MAX_AGE:3600}
-  allowedHeaders: ${ALLOWED_HEADERS:*}

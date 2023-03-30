@@ -7,7 +7,6 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,12 +25,12 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
-                       AccessDeniedException exception) throws IOException, ServletException {
+                       AccessDeniedException exception) throws ServletException {
         Map<Object, Object> map = new HashMap<>();
         map.put(STATUS, ERROR_STATUS);
         map.put(MESSAGE, exception.getMessage());
         map.put(DISPLAY_MESSAGE, ERROR_MESSAGE);
-        map.put(ERROR_CODE, 4099);
+        map.put(ERROR_CODE, HttpServletResponse.SC_UNAUTHORIZED);
 
         response.setContentType(APPLICATION_JSON);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

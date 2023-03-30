@@ -13,7 +13,6 @@ import lombok.Setter;
 public class UserRegistrationRequestDto implements RequestDto {
 
     private String username;
-//    private String email;
     private String password;
     private RoleType roleType;
     private Role role;
@@ -25,12 +24,8 @@ public class UserRegistrationRequestDto implements RequestDto {
 
     @Override
     public boolean isRequiredAvailable() {
-        return isNonEmpty(username)
-//                && isNonEmpty(email)
-                && isNonEmpty(password)
-                && roleType != null && isNonEmpty(roleType.name())
-                && roleType != RoleType.ADMIN
-                ;
+        return isNonEmpty(username) && isNonEmpty(password) && roleType != null && isNonEmpty(roleType.name())
+                && roleType != RoleType.ADMIN;
     }
 
     @Override

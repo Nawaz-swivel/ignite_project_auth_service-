@@ -45,10 +45,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-//                .antMatchers(HttpMethod.POST, REGISTRATION_ENDPOINT).permitAll()
                 .antMatchers(HttpMethod.POST, AUTH_USERS_ENDPOINT).access("hasAuthority('ADMIN')")
                 .antMatchers(HttpMethod.DELETE, AUTH_USERS_ENDPOINT).access("hasAuthority('ADMIN')")
-//                .antMatchers(ROLES_ENDPOINT).access("hasAuthority('ADMIN')")
                 .anyRequest().authenticated().and().cors().and()
                 .csrf().disable();
     }

@@ -7,7 +7,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,12 +25,12 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
-                         AuthenticationException exception) throws IOException, ServletException {
+                         AuthenticationException exception) throws ServletException {
         Map<Object, Object> map = new HashMap<>();
         map.put(STATUS, ERROR_STATUS);
         map.put(MESSAGE, exception.getMessage());
         map.put(DISPLAY_MESSAGE, ERROR_MESSAGE);
-        map.put(ERROR_CODE, 4098);
+        map.put(ERROR_CODE, HttpServletResponse.SC_UNAUTHORIZED);
 
         response.setContentType(APPLICATION_JSON);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

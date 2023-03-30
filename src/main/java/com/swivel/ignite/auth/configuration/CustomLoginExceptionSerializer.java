@@ -1,9 +1,9 @@
 package com.swivel.ignite.auth.configuration;
 
-import com.swivel.ignite.auth.enums.ErrorResponseStatusType;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.swivel.ignite.auth.enums.ErrorResponseStatusType;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;

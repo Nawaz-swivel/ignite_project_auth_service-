@@ -8,12 +8,12 @@ import lombok.Getter;
 @Getter
 public enum ErrorResponseStatusType {
 
-    MISSING_REQUIRED_FIELDS(4001, "Missing required fields"),
-    ROLE_NOT_FOUND(4002, "Role not found"),
-    USER_ALREADY_EXISTS(4003, "User already exists, please login"),
-    INVALID_LOGIN(4004, "Incorrect username or password"),
-    USER_NOT_FOUND(4005, "User not found for given username"),
-    INTERNAL_SERVER_ERROR(5000, "Internal Server Error");
+    MISSING_REQUIRED_FIELDS(400, "Missing required fields"),
+    ROLE_NOT_FOUND(404, "Role not found"),
+    USER_ALREADY_EXISTS(400, "User already exists, please login"),
+    INVALID_LOGIN(401, "Incorrect username or password"),
+    USER_NOT_FOUND(404, "User not found for given username"),
+    INTERNAL_SERVER_ERROR(500, "Internal Server Error");
 
     private final int code;
     private final String message;
