@@ -25,8 +25,8 @@ spring:
     baseline-description: "init db migration"
 
     # active profile should be activated for different env
-#  profiles:
-#    active: prod
+  profiles:
+    active: prod
 
 ## eureka server configuration
 eureka:
