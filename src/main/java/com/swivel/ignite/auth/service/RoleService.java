@@ -23,6 +23,12 @@ public class RoleService {
         this.roleRepository = roleRepository;
     }
 
+    /**
+     * This method returns a role from role name
+     *
+     * @param name role name
+     * @return Role/ null
+     */
     public Role getRoleByName(String name) {
         try {
             Optional<Role> optionalRole = roleRepository.findByName(name);
