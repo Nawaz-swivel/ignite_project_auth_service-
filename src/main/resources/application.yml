@@ -45,6 +45,7 @@ security:
     client:
       client-id: ignite-client
       client-secret: 1234
+    link: http://localhost:8079
 
 # oauth2 resource server configuration
 oauth:
