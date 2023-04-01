@@ -8,6 +8,7 @@ import com.swivel.ignite.auth.enums.RoleType;
 import com.swivel.ignite.auth.enums.SuccessResponseStatusType;
 import com.swivel.ignite.auth.exception.AuthException;
 import com.swivel.ignite.auth.exception.UserAlreadyExistsException;
+import com.swivel.ignite.auth.exception.UserNotFoundException;
 import com.swivel.ignite.auth.exception.UserRoleNotFoundException;
 import com.swivel.ignite.auth.service.RoleService;
 import com.swivel.ignite.auth.service.UserService;
@@ -41,6 +42,7 @@ class UserControllerTest {
     private static final String APPLICATION_JSON_UTF8 = "application/json;charset=UTF-8";
 
     private static final String CREATE_USER_URI = "/api/v1/auth/users/register";
+    private static final String DELETE_USER_URI = "/api/v1/auth/users/delete/{username}";
 
     @Mock
     private UserService userService;
@@ -131,6 +133,60 @@ class UserControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post(CREATE_USER_URI)
                         .content(getSampleUserRegistrationRequestDto().toJson())
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isInternalServerError())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.status").value(ERROR_STATUS))
+                .andExpect(jsonPath("$.message").value(ErrorResponseStatusType.INTERNAL_SERVER_ERROR
+                        .getMessage()))
+                .andExpect(jsonPath("$.errorCode").value(ErrorResponseStatusType.INTERNAL_SERVER_ERROR
+                        .getCode()))
+                .andExpect(jsonPath("$.displayMessage").value(ERROR_MESSAGE));
+    }
+
+    /**
+     * Start of tests for deleteUser method
+     * Api context: /api/v1/auth/users/delete/{username}
+     */
+    @Test
+    void Should_ReturnOk_When_DeletingUserIsSuccessful() throws Exception {
+        doNothing().when(userService).deleteUser(anyString());
+
+        String uri = DELETE_USER_URI.replace("{username}", USER_NAME);
+        mockMvc.perform(MockMvcRequestBuilders.delete(uri)
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.status").value(SUCCESS_STATUS))
+                .andExpect(jsonPath("$.message").value(SuccessResponseStatusType.DELETE_USER.getMessage()))
+                .andExpect(jsonPath("$.statusCode").value(SuccessResponseStatusType.DELETE_USER.getCode()))
+                .andExpect(jsonPath("$.data").doesNotExist())
+                .andExpect(jsonPath("$.displayMessage").value(SUCCESS_MESSAGE));
+    }
+
+    @Test
+    void Should_ReturnBadRequest_When_DeletingUserForUserNotFound() throws Exception {
+        doThrow(new UserNotFoundException(FAILED)).when(userService).deleteUser(anyString());
+
+        String uri = DELETE_USER_URI.replace("{username}", USER_NAME);
+        mockMvc.perform(MockMvcRequestBuilders.delete(uri)
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.status").value(ERROR_STATUS))
+                .andExpect(jsonPath("$.message").value(ErrorResponseStatusType.USER_NOT_FOUND
+                        .getMessage()))
+                .andExpect(jsonPath("$.errorCode").value(ErrorResponseStatusType.USER_NOT_FOUND
+                        .getCode()))
+                .andExpect(jsonPath("$.displayMessage").value(ERROR_MESSAGE));
+    }
+
+    @Test
+    void Should_ReturnInternalServerError_When_DeletingUserIsFailed() throws Exception {
+        doThrow(new AuthException(FAILED)).when(userService).deleteUser(anyString());
+
+        String uri = DELETE_USER_URI.replace("{username}", USER_NAME);
+        mockMvc.perform(MockMvcRequestBuilders.delete(uri)
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))

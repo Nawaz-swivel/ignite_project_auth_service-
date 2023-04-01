@@ -3,6 +3,7 @@ package com.swivel.ignite.auth.service;
 import com.swivel.ignite.auth.entity.User;
 import com.swivel.ignite.auth.exception.AuthException;
 import com.swivel.ignite.auth.exception.UserAlreadyExistsException;
+import com.swivel.ignite.auth.exception.UserNotFoundException;
 import com.swivel.ignite.auth.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 class UserServiceTest {
 
     private static final String USER_ID = "uid-123456789";
+    private static final String USER_NAME = "Mohamed Nawaz";
     private static final String USER_PASSWORD = "123456789";
     private static final String ERROR = "ERROR";
     @Mock
@@ -81,6 +83,33 @@ class UserServiceTest {
         AuthException exception = assertThrows(AuthException.class, () ->
                 userService.createUser(user));
         assertEquals("Failed to save user to DB for user id: {}" + USER_ID, exception.getMessage());
+    }
+
+    /**
+     * Start of tests for deleteUser method
+     */
+    @Test
+    void Should_DeleteUser_When_DeletingUserIsSuccessful() {
+        when(userRepository.findByUsername(anyString())).thenReturn(Optional.of(getSampleUser()));
+        userService.deleteUser(USER_NAME);
+        verify(userRepository, times(1)).delete(any(User.class));
+    }
+
+    @Test
+    void Should_ThrowUserNotFoundException_When_DeletingUserForUserNotFound() {
+        when(userRepository.findByUsername(anyString())).thenReturn(Optional.empty());
+        UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> userService
+                .deleteUser(USER_NAME));
+        assertEquals("User is not found in auth db for username: " + USER_NAME, exception.getMessage());
+    }
+
+    @Test
+    void Should_ThrowAuthException_When_DeletingUserIsFailed() {
+        when(userRepository.findByUsername(anyString())).thenThrow(new DataAccessException(ERROR) {
+        });
+        AuthException exception = assertThrows(AuthException.class, () -> userService
+                .deleteUser(USER_NAME));
+        assertEquals("Failed to delete user from auth db for username: " + USER_NAME, exception.getMessage());
     }
 
 
