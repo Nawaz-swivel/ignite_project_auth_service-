@@ -20,9 +20,4 @@ public class AuthApplicationTests {
 //
 //        assertTrue(true, "Spring Application Context Loaded Successfully");
 //    }
-
-    @Test
-    public void test() {
-        assertTrue(true);
-    }
 }
