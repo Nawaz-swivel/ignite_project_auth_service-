@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AuthApplicationTests {
 
     /**
-     * This method tests Spring application main run method
+     * This method test Spring application main run method
      */
     @Test
     public void Should_RunSpringApplication() {
