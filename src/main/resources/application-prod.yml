@@ -7,7 +7,7 @@ spring:
   application:
     name: ignite-auth-service
   datasource:
-    url: jdbc:mysql://107.23.77.51:3306/ignite_auth_db?createDatabaseIfNotExist=true
+    url: jdbc:mysql://3.94.149.236:3306/ignite_auth_db?createDatabaseIfNotExist=true
     username: ${DB_USERNAME:user}
     password: ${DB_PASSWORD:user}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -30,14 +30,14 @@ eureka:
     prefer-ip-address: true
   client:
     service-url:
-      defaultZone: ${EUREKA_SERVER_URL:http://3.92.197.186:8761/eureka}
+      defaultZone: ${EUREKA_SERVER_URL:http://44.202.106.13:8761/eureka}
 
 
 ## oauth2 security configuration
 security:
   oauth2:
     resource:
-      token-info-uri: http://54.196.27.106:8080/ignite-auth-service/oauth/check_token
+      token-info-uri: http://54.157.156.197:8080/ignite-auth-service/oauth/check_token
     client:
       client-id: ignite-client
       client-secret: 1234
