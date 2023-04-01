@@ -14,7 +14,7 @@ on:
 
 jobs:
   test:
-    name: Tests
+    name: Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -60,7 +60,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Nawaz-swivel_ignite_project_auth_service-
   build:
-    name: Build
+    name: Build and Deploy
     needs: scan
     runs-on: self-hosted
     steps:
