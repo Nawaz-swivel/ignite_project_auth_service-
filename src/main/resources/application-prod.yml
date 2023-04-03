@@ -52,4 +52,4 @@ logging:
   level:
     com.swivel.ignite.auth: ${LOG_LEVEL:DEBUG}
   file:
-    path: ${LOGPATH:/home/ubuntu/logs}
+    path: ${LOGPATH:/home/ubuntu}
