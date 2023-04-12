@@ -6,10 +6,6 @@ import com.swivel.ignite.auth.entity.Role;
 import com.swivel.ignite.auth.entity.User;
 import com.swivel.ignite.auth.enums.ErrorResponseStatusType;
 import com.swivel.ignite.auth.enums.SuccessResponseStatusType;
-import com.swivel.ignite.auth.exception.AuthException;
-import com.swivel.ignite.auth.exception.UserAlreadyExistsException;
-import com.swivel.ignite.auth.exception.UserNotFoundException;
-import com.swivel.ignite.auth.exception.UserRoleNotFoundException;
 import com.swivel.ignite.auth.service.RoleService;
 import com.swivel.ignite.auth.service.UserService;
 import com.swivel.ignite.auth.wrapper.ResponseWrapper;
@@ -43,42 +39,23 @@ public class UserController extends Controller {
      */
     @PostMapping(path = "/register", consumes = APPLICATION_JSON_UTF_8, produces = APPLICATION_JSON_UTF_8)
     public ResponseEntity<ResponseWrapper> createUser(@RequestBody UserRegistrationRequestDto requestDto) {
-        try {
-            if (!requestDto.isRequiredAvailable()) {
-                log.error("Required fields missing in user registration request DTO for creating user");
-                return getBadRequestResponse(ErrorResponseStatusType.MISSING_REQUIRED_FIELDS);
-            }
-            Role userRole = roleService.getRoleByName(requestDto.getRoleType().name());
-            requestDto.setRole(userRole);
-            User user = new User(requestDto);
-            userService.createUser(user);
-            UserResponseDto responseDto = new UserResponseDto(user);
-            log.debug("Created user {}", responseDto.toLogJson());
-            return getSuccessResponse(SuccessResponseStatusType.CREATE_USER, responseDto);
-        } catch (UserRoleNotFoundException e) {
-            log.error("User role not in DB for create user with request dto: {}", requestDto.toLogJson(), e);
-            return getBadRequestResponse(ErrorResponseStatusType.ROLE_NOT_FOUND);
-        } catch (UserAlreadyExistsException e) {
-            log.error("User already exists for create user with request dto: {}", requestDto.toLogJson(), e);
-            return getBadRequestResponse(ErrorResponseStatusType.USER_ALREADY_EXISTS);
-        } catch (AuthException e) {
-            log.error("Creating user was failed for requestDto: {}", requestDto.toLogJson(), e);
-            return getInternalServerErrorResponse();
+        if (!requestDto.isRequiredAvailable()) {
+            log.error("Required fields missing in user registration request DTO for creating user");
+            return getBadRequestResponse(ErrorResponseStatusType.MISSING_REQUIRED_FIELDS);
         }
+        Role userRole = roleService.getRoleByName(requestDto.getRoleType().name());
+        requestDto.setRole(userRole);
+        User user = new User(requestDto);
+        userService.createUser(user);
+        UserResponseDto responseDto = new UserResponseDto(user);
+        log.debug("Created user {}", responseDto.toLogJson());
+        return getSuccessResponse(SuccessResponseStatusType.CREATE_USER, responseDto);
     }
 
     @DeleteMapping(path = "/delete/{username}", produces = APPLICATION_JSON_UTF_8)
     public ResponseEntity<ResponseWrapper> deleteUser(@PathVariable(name = "username") String username) {
-        try {
-            userService.deleteUser(username);
-            log.debug("Successfully deleted the user of username: {}", username);
-            return getSuccessResponse(SuccessResponseStatusType.DELETE_USER, null);
-        } catch (UserNotFoundException e) {
-            log.error("User not found for delete user for username: {}", username, e);
-            return getBadRequestResponse(ErrorResponseStatusType.USER_NOT_FOUND);
-        } catch (AuthException e) {
-            log.error("Failed to delete user for username: {}", username, e);
-            return getInternalServerErrorResponse();
-        }
+        userService.deleteUser(username);
+        log.debug("Successfully deleted the user of username: {}", username);
+        return getSuccessResponse(SuccessResponseStatusType.DELETE_USER, null);
     }
 }

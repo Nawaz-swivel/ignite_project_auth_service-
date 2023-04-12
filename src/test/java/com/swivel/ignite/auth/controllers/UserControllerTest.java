@@ -6,10 +6,7 @@ import com.swivel.ignite.auth.entity.User;
 import com.swivel.ignite.auth.enums.ErrorResponseStatusType;
 import com.swivel.ignite.auth.enums.RoleType;
 import com.swivel.ignite.auth.enums.SuccessResponseStatusType;
-import com.swivel.ignite.auth.exception.AuthException;
-import com.swivel.ignite.auth.exception.UserAlreadyExistsException;
-import com.swivel.ignite.auth.exception.UserNotFoundException;
-import com.swivel.ignite.auth.exception.UserRoleNotFoundException;
+import com.swivel.ignite.auth.exception.*;
 import com.swivel.ignite.auth.service.RoleService;
 import com.swivel.ignite.auth.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,7 +51,9 @@ class UserControllerTest {
     void setUp() {
         initMocks(this);
         UserController userController = new UserController(userService, roleService);
-        mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(userController)
+                .setControllerAdvice(new CustomizedExceptionHandling())
+                .build();
     }
 
     /**
@@ -104,7 +103,7 @@ class UserControllerTest {
                         .content(getSampleUserRegistrationRequestDto().toJson())
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.status").value(ERROR_STATUS))
                 .andExpect(jsonPath("$.message").value(ErrorResponseStatusType.ROLE_NOT_FOUND.getMessage()))
                 .andExpect(jsonPath("$.errorCode").value(ErrorResponseStatusType.ROLE_NOT_FOUND.getCode()))
@@ -120,7 +119,7 @@ class UserControllerTest {
                         .content(getSampleUserRegistrationRequestDto().toJson())
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.status").value(ERROR_STATUS))
                 .andExpect(jsonPath("$.message").value(ErrorResponseStatusType.USER_ALREADY_EXISTS.getMessage()))
                 .andExpect(jsonPath("$.errorCode").value(ErrorResponseStatusType.USER_ALREADY_EXISTS.getCode()))
@@ -135,7 +134,7 @@ class UserControllerTest {
                         .content(getSampleUserRegistrationRequestDto().toJson())
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.status").value(ERROR_STATUS))
                 .andExpect(jsonPath("$.message").value(ErrorResponseStatusType.INTERNAL_SERVER_ERROR
                         .getMessage()))
@@ -172,7 +171,7 @@ class UserControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete(uri)
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.status").value(ERROR_STATUS))
                 .andExpect(jsonPath("$.message").value(ErrorResponseStatusType.USER_NOT_FOUND
                         .getMessage()))
@@ -189,7 +188,7 @@ class UserControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete(uri)
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.status").value(ERROR_STATUS))
                 .andExpect(jsonPath("$.message").value(ErrorResponseStatusType.INTERNAL_SERVER_ERROR
                         .getMessage()))
